@@ -2,7 +2,7 @@ package helloProject;
 
 import org.apache.log4j.Logger;
 import java.io.UnsupportedEncodingException;
-import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 import java.util.ResourceBundle;
@@ -12,7 +12,7 @@ public class HelloWorld {
 	private static Logger logger = Logger.getLogger(HelloWorld.class);
 
 	public static String getMessage() {
-		return getMessage(getCurrentHour(new Date()));
+		return getMessage(getCurrentHour());
 	}
 
 	public static String getMessage(int currentHour) {
@@ -21,12 +21,15 @@ public class HelloWorld {
 		return convertToUTF(resourceBundle.getString(getPartOfDay(currentHour)));
 	}
 
-	private static int getCurrentHour(Date currentDate) {
-		return Integer.parseInt(new SimpleDateFormat("HH").format(currentDate));
+	private static int getCurrentHour() {
+		Date currentDate = new Date();
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(currentDate);
+		return calendar.get(Calendar.HOUR_OF_DAY);
 	}
 
 	private static String convertToUTF(String str) {
-		String newStr = null;
+		String newStr = "Wrong message resource";
 		try {
 			newStr = new String(str.getBytes("ISO-8859-1"), "UTF-8");
 		} catch (UnsupportedEncodingException e) {
